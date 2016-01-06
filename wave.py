@@ -13,12 +13,9 @@ computes associated Laguerre polynomial coefficients for l and n
 and returns the polynomial function of input x
 http://mathworld.wolfram.com/AssociatedLaguerrePolynomial.html
 """
-def associatedLaguerre(l, n, x):	
-	#for m in range(n+1):
-	#	coeffs[m] = (-1)**m*fac(n+k)/( fac(n-m)*fac(k+m)*fac(m))
+def associatedLaguerre(l, n, x):
 	coeffs = []
 	for k1 in range(n-l-1+1):
-		#print k1, " K"
 		c = (-1)**k1*fac(n+l)**2/fac(n-l-k1-1)/fac(2*l+1+k1)/fac(k1)
 		coeffs.append(c)
 		
@@ -34,9 +31,14 @@ pi = 3.141592658979323
 hbar = 6.626e-34
 a = .529e-10
 
-l = 0
-m = 0
-n = 5
+# https://en.wikipedia.org/wiki/Quantum_number
+# principal quantum number: n is a postive number
+#   angular quantum number: l = 0,1,2,...,n-1
+#  magnetic quantum number: m = -l, -l+1,...,l-1,l
+
+l = 3
+m = 1
+n = 6
 
 # angle dependence of psi
 theta = np.linspace(0.0, 2*np.pi, 100)
@@ -50,16 +52,8 @@ R1 = np.sqrt((2.0/n/a)**3*factorial(n-l-1)/(2*n*factorial(n+l)**3 ))
 r = np.linspace(0.0, 4*a, 10)
 R2 = np.exp(-r/n/a)*(2*r/n/a)**l*associatedLaguerre(l, n, 2*r/n/a)
 
-test = 1/np.sqrt(2)*a**(-1.5)*(1-.5*r/a)*np.exp(-r/2/a)#R20
-
-test = 8.0/27.0/np.sqrt(6)*a**(-1.5)*(1-r/a/6)*(r/a)*np.exp(-r/3/a)
-
-#print R1, "  ", 1/np.sqrt(2)*a**(-1.5)
-##print test, 'test', "\n"
-#print r, " r", "\n"
-
-
-#print R1*R2, "\n"
+#test = 1/np.sqrt(2)*a**(-1.5)*(1-.5*r/a)*np.exp(-r/2/a)
+#test = 8.0/27.0/np.sqrt(6)*a**(-1.5)*(1-r/a/6)*(r/a)*np.exp(-r/3/a)
 
 def psi(r1, theta1, phi1):
 	
@@ -71,8 +65,8 @@ def psi(r1, theta1, phi1):
 S = (-25.0*a, -25.0*a, 25.0*a, 25.0*a)
 
 # Loop through all pixels.
-w = 600
-h = 600
+w = 500
+h = 500
 
 r = []
 theta = []
@@ -88,6 +82,7 @@ for i, x in enumerate(np.linspace(S[0], S[2], w)):
 		coords.append((rad, angle))
 		r.append(rad)
 		theta.append(angle)
+
 r = np.array(r)
 theta = np.array(theta)
 phi = np.array(theta)
